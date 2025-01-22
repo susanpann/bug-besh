@@ -1,0 +1,17 @@
+variable "normal-proj-vars-scoped-channels" {
+    value "channel-pewpew" {
+        channel = ["channel-pewpew"]
+    }
+}
+
+variable "normal-proj-vars-scoped-channels2" {
+    value "channel-default" {
+        channel = ["default"]
+    }
+}
+
+variable "normal-project-vars" {
+    value "123453563452q3v4wertag2345fcrtfvwerszdv" {
+        environment = ["development", "production", "mystery"]
+    }
+}
