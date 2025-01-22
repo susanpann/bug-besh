@@ -11,4 +11,40 @@ run_retention_policy {
     quantity_to_keep = 100
 }
 
-process {}
+process {
+    step "run-a-script" {
+        name = "Run a Script"
+
+        action {
+            action_type = "Octopus.Script"
+            properties = {
+                Octopus.Action.Script.ScriptBody = <<-EOT
+                    Write-Host "======== Variables ========"
+                    Write-Host "Environment: " $OctopusParameters["Octopus.Environment.Name"]
+                    Write-Host "Tenant: " $OctopusParameters["Octopus.Deployment.Tenant.Name"]
+                    Write-Host "==========================="
+                    Write-Host "firstset-t1" $OctopusParameters["firstset-t1"]
+                    Write-Host "firstset-t2" $OctopusParameters["firstset-t2"]
+                    Write-Host "firstset-var" $OctopusParameters["firstset-var"]
+                    Write-Host "==========================="
+                    Write-Host "secondset-t1" $OctopusParameters["secondset-t1"]
+                    Write-Host "secondset-t2" $OctopusParameters["secondset-t2"]
+                    Write-Host "secondset-var" $OctopusParameters["secondset-var"]
+                    Write-Host "==========================="
+                    Write-Host "projectvar-p1" $OctopusParameters["projectvar-p1"]
+                    
+                    Write-Host "==========================="
+                    Write-Host "Regular degular vars"
+                    Write-Host "normal-proj-vars-scoped-channels" $OctopusParameters["normal-proj-vars-scoped-channels"]
+                    Write-Host "normal-proj-vars-scoped-channels2" $OctopusParameters["normal-proj-vars-scoped-channels2"]
+                    Write-Host "normal-project-vars" $OctopusParameters["normal-project-vars"]
+                    
+                    EOT
+                Octopus.Action.Script.ScriptSource = "Inline"
+                Octopus.Action.Script.Syntax = "PowerShell"
+                OctopusUseBundledTooling = "False"
+            }
+            worker_pool = "hosted-windows"
+        }
+    }
+}
